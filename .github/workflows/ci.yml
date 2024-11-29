@@ -33,5 +33,5 @@ jobs:
       # Here you can add integration or unit tests, such as HTTP requests to check functionality.
 
   docker-build-and-push
-```rust:
+
 
