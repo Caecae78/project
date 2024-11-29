@@ -27,11 +27,24 @@ jobs:
         pip install flask psutil
 
     - name: Test application
-      run: python app.py &
-      env:
-        FLASK_ENV: testing
-      # Here you can add integration or unit tests, such as HTTP requests to check functionality.
+      run: |
+        python app.py &
+        sleep 5
+        curl -f http://localhost:5000
 
-  docker-build-and-push
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Build and push Docker image
+      run: |
+        docker build -t your-dockerhub-username/battery-reminder:latest .
+        docker push your-dockerhub-username/battery-reminder:latest
